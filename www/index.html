@@ -50,7 +50,7 @@
 
             // This updates the map, listing and store page
             // for every result
-            function renderNEMS(nems, label) {
+            function renderNEMS(nems) {
                 var coords = nems.get('location').latitude+","+nems.get('location').longitude;
                 
                 // Update the map
@@ -58,21 +58,21 @@
                 
                 // Add a list divider for the Pharmacy and SuperTarget results
                 $("#map").attr('src', src);
-                switch(label) {
+               /* switch(label) {
                     case 'S':
                     $("#list").append('<li data-role="list-divider" role="heading">Nearest SuperTarget</li>');
                     break;
                     case 'P':
                     $("#list").append('<li data-role="list-divider" role="heading">Nearest Pharmacy</li>');
                     break;
-                }
+                } */
                 // Append to the list of results
-                $("#list").append('<li><a href="#page'+store.get('storeNumber')+'" data-role="button" data-transition="slide">'+nems.get('name')+'</a><span class="ui-li-count ui-btn-corner-all">'+label+'</span></li>');
+                $("#list").append('<li><a href="#page'+'" data-role="button" data-transition="slide">'+nems.get('name')+'</a><span class="ui-li-count ui-btn-corner-all">'+label+'</span></li>');
 
                 // Necessary for the listview to render correctly
                 $("#list").listview('refresh');
                 
-                $('body').append('<div data-role="page" id="page'+nems.get('storeNumber')+'"><div data-theme="b" data-role="header" data-position="fixed"><h3>'+nems.get('name')+'</h3><a data-role="button" data-rel="back" data-icon="arrow-l" data-iconpos="left"class="ui-btn-left">Results</a></div><img id="map" src="https://maps.googleapis.com/maps/api/staticmap?scale=2&center='+coords+'+&zoom=14&size='+window.innerWidth+'x200&markers='+coords+'&sensor=false" height="200"><div data-role="content"><div><p><b>Address</b><br/>'+nems.get('location').displayAddress+'</p><p><b>Opening Hours</b><br/>'+nems.get('hours').join('<br/>')+'</p></div></div></div>');
+                $('body').append('<div data-role="page" id="page'+'"><div data-theme="b" data-role="header" data-position="fixed"><h3>'+nems.get('name')+'</h3><a data-role="button" data-rel="back" data-icon="arrow-l" data-iconpos="left"class="ui-btn-left">Results</a></div><img id="map" src="https://maps.googleapis.com/maps/api/staticmap?scale=2&center='+coords+'+&zoom=14&size='+window.innerWidth+'x200&markers='+coords+'&sensor=false" height="200"><div data-role="content"><div><p><b>Address</b><br/>'+nems.get('location').displayAddress+'</p></div></div></div>');
             }
 
             // Most of the magic happens here
