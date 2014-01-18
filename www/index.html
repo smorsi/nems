@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-        <title>Target Store Locator</title>
+        <title>Non-Emergency Services Locator</title>
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
@@ -22,7 +22,7 @@
             <img id="map" src="https://maps.googleapis.com/maps/api/staticmap?scale=2&center=Palo Alto, CA&amp;zoom=14&amp;size=400x200&amp;markers=Palo Alto, CA&amp;sensor=false" height="200" style="display: block; margin-left: auto; margin-right: auto">
             <div data-role="content">
                 <ul id="list" data-role="listview" data-divider-theme="c" data-inset="false" data-count-theme="b">
-                    <li data-role="list-divider" role="heading">Nearest Stores</li>
+                    <li data-role="list-divider" role="heading">Nearest Non-Emergency Services Locations</li>
                 </ul>
             </div>
         </div>
@@ -50,8 +50,8 @@
 
             // This updates the map, listing and store page
             // for every result
-            function renderStore(store, label) {
-                var coords = store.get('location').latitude+","+store.get('location').longitude;
+            function renderNEMS(nems, label) {
+                var coords = nems.get('location').latitude+","+nems.get('location').longitude;
                 
                 // Update the map
                 var src =  $("#map").attr('src') + "&markers=color:blue%7Clabel:"+label+"%7C"+coords;
@@ -67,12 +67,12 @@
                     break;
                 }
                 // Append to the list of results
-                $("#list").append('<li><a href="#page'+store.get('storeNumber')+'" data-role="button" data-transition="slide">'+store.get('name')+'</a><span class="ui-li-count ui-btn-corner-all">'+label+'</span></li>');
+                $("#list").append('<li><a href="#page'+store.get('storeNumber')+'" data-role="button" data-transition="slide">'+nems.get('name')+'</a><span class="ui-li-count ui-btn-corner-all">'+label+'</span></li>');
 
                 // Necessary for the listview to render correctly
                 $("#list").listview('refresh');
                 
-                $('body').append('<div data-role="page" id="page'+store.get('storeNumber')+'"><div data-theme="b" data-role="header" data-position="fixed"><h3>'+store.get('name')+'</h3><a data-role="button" data-rel="back" data-icon="arrow-l" data-iconpos="left"class="ui-btn-left">Results</a></div><img id="map" src="https://maps.googleapis.com/maps/api/staticmap?scale=2&center='+coords+'+&zoom=14&size='+window.innerWidth+'x200&markers='+coords+'&sensor=false" height="200"><div data-role="content"><div><p><b>Address</b><br/>'+store.get('location').displayAddress+'</p><p><b>Opening Hours</b><br/>'+store.get('hours').join('<br/>')+'</p></div></div></div>');
+                $('body').append('<div data-role="page" id="page'+nems.get('storeNumber')+'"><div data-theme="b" data-role="header" data-position="fixed"><h3>'+nems.get('name')+'</h3><a data-role="button" data-rel="back" data-icon="arrow-l" data-iconpos="left"class="ui-btn-left">Results</a></div><img id="map" src="https://maps.googleapis.com/maps/api/staticmap?scale=2&center='+coords+'+&zoom=14&size='+window.innerWidth+'x200&markers='+coords+'&sensor=false" height="200"><div data-role="content"><div><p><b>Address</b><br/>'+nems.get('location').displayAddress+'</p><p><b>Opening Hours</b><br/>'+nems.get('hours').join('<br/>')+'</p></div></div></div>');
             }
 
             // Most of the magic happens here
@@ -86,20 +86,20 @@
 
                 // Initialize a local “stores” object using the SDK
                 // This query will return all stores within 15,000 meters of the current location
-                var stores = new Apigee.Collection( { "client":apigee, "type":"stores", "qs":{"ql":"location within 15000 of "+latlon, "limit":5} } );
+                var nems = new Apigee.Collection( { "client":apigee, "type":"nems", "qs":{"ql":"location within 15000 of "+latlon, "limit":5} } );
 
                 // Do the actual query and process the results
-                stores.fetch( function(response) {
+                nems.fetch( function(response) {
                         
                         // Process the regular store
                         var count = 1;
-                        while(stores.hasNextEntity()) {
-                            renderStore(stores.getNextEntity(), count);
+                        while(nems.hasNextEntity()) {
+                            renderNEMS(nems.getNextEntity(), count);
                             count++;
                         }
 
-                        // Now let’s search for the nearest store with a Pharmacy
-                        var pharmacy = new Apigee.Collection( { "client":apigee, "type":"stores", "qs":{"ql":"location within 100000 of "+latlon+" and pharmacy = true", "limit":1}});
+                       // Now let’s search for the nearest store with a Pharmacy
+                       /* var pharmacy = new Apigee.Collection( { "client":apigee, "type":"stores", "qs":{"ql":"location within 100000 of "+latlon+" and pharmacy = true", "limit":1}});
                         pharmacy.fetch( function(response) {
                             renderStore(pharmacy.getNextEntity(), 'P');
 
@@ -107,8 +107,8 @@
                             var supertarget = new Apigee.Collection( { "client":apigee, "type":"stores", "qs":{"ql":"location within 100000 of "+latlon+" and supertarget = true", "limit":1}});
                             supertarget.fetch( function(response) {
                                 renderStore(supertarget.getNextEntity(), 'S')
-                                });
-                            });
+                                }); 
+                            }); */
                         });
             }
 
