@@ -50,7 +50,7 @@
 
             // This updates the map, listing and store page
             // for every result
-            function renderNEMS(nems) {
+            function renderNEMS(nems, label) {
                 var coords = nems.get('location').latitude+","+nems.get('location').longitude;
                 
                 // Update the map
@@ -58,14 +58,11 @@
                 
                 // Add a list divider for the Pharmacy and SuperTarget results
                 $("#map").attr('src', src);
-               /* switch(label) {
-                    case 'S':
-                    $("#list").append('<li data-role="list-divider" role="heading">Nearest SuperTarget</li>');
+                switch(label) {
+                    case 'A':
+                    $("#list").append('<li data-role="list-divider" role="heading">Nearest Ambulance</li>');
                     break;
-                    case 'P':
-                    $("#list").append('<li data-role="list-divider" role="heading">Nearest Pharmacy</li>');
-                    break;
-                } */
+                }
                 // Append to the list of results
                 $("#list").append('<li><a href="#page'+'" data-role="button" data-transition="slide">'+nems.get('name')+'</a><span class="ui-li-count ui-btn-corner-all">'+label+'</span></li>');
 
@@ -86,7 +83,7 @@
 
                 // Initialize a local “stores” object using the SDK
                 // This query will return all stores within 15,000 meters of the current location
-                var nems = new Apigee.Collection( { "client":apigee, "type":"nems", "qs":{"ql":"location within 15000 of "+latlon, "limit":5} } );
+                var nems = new Apigee.Collection( { "client":apigee, "type":"stores", "qs":{"ql":"location within 15000 of "+latlon, "limit":5} } );
 
                 // Do the actual query and process the results
                 nems.fetch( function(response) {
@@ -99,17 +96,13 @@
                         }
 
                        // Now let’s search for the nearest store with a Pharmacy
-                       /* var pharmacy = new Apigee.Collection( { "client":apigee, "type":"stores", "qs":{"ql":"location within 100000 of "+latlon+" and pharmacy = true", "limit":1}});
+                       /*
+                        var pharmacy = new Apigee.Collection( { "client":apigee, "type":"stores", "qs":{"ql":"location within 100000 of "+latlon, "limit":1}});
                         pharmacy.fetch( function(response) {
-                            renderStore(pharmacy.getNextEntity(), 'P');
-
-                            // … And the nearest SuperTarget
-                            var supertarget = new Apigee.Collection( { "client":apigee, "type":"stores", "qs":{"ql":"location within 100000 of "+latlon+" and supertarget = true", "limit":1}});
-                            supertarget.fetch( function(response) {
-                                renderStore(supertarget.getNextEntity(), 'S')
-                                }); 
-                            }); */
+                            renderNEMS(pharmacy.getNextEntity(), 'A');
                         });
+                        */
+                });
             }
 
             function onGetLocationError() {
