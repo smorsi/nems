@@ -29,8 +29,8 @@
         <script>
             //Initialize the Usergrid SDK
             var apigee = new Apigee.Client({
-                orgName:'usergrid',
-                appName:'tests'
+                orgName:'gaurav',
+                appName:'nems'
             });
 
             $(function(){
@@ -83,7 +83,7 @@
 
                 // Initialize a local “stores” object using the SDK
                 // This query will return all stores within 15,000 meters of the current location
-                var nems = new Apigee.Collection( { "client":apigee, "type":"stores", "qs":{"ql":"location within 15000 of "+latlon, "limit":5} } );
+                var nems = new Apigee.Collection( { "client":apigee, "type":"stores", "qs":{"ql":"location within 150000 of "+latlon, "limit":5} } );
 
                 // Do the actual query and process the results
                 nems.fetch( function(response) {
