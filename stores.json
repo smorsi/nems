@@ -7,7 +7,7 @@
 	},
 	"name": "ER Transportation Ambulette NYC Brooklyn",
 	"phone": "(718) 764-7432"
-},
+},{
 	"location": {
 		"stateCode": "NY",
 		"latitude": 40.649387,
@@ -16,7 +16,7 @@
 	},
 	"name": "Alta Medical Transportation",
 	"phone": "(212) 202-5555"
-},
+},{
 	"location": {
 		"stateCode": "NJ",
 		"latitude": 40.693134,
